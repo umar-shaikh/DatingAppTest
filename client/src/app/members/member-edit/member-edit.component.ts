@@ -37,7 +37,7 @@ export class MemberEditComponent {
     loadMember() {
      const user = this.accountService.currentUser();
      if(!user) return;
-     this.memberService.getMember(user.userName).subscribe({next: member => this.member = member});
+     this.memberService.getMember(user.username).subscribe({next: member => this.member = member});
     }
 
     updateMember(){

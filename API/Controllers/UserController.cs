@@ -21,7 +21,7 @@ public class UserController(IUserRepository userRepository, IMapper mapper, IPho
 {  
     
     [HttpGet]
-
+    // [Authorize(Roles = "Admin")]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
     {
         userParams.CurrentUsername = User.GetUsername();
@@ -32,8 +32,9 @@ public class UserController(IUserRepository userRepository, IMapper mapper, IPho
         return Ok(users);
     }
 
-    
-    [HttpGet("{username}")]
+
+        [Authorize(Roles = "Member")]
+        [HttpGet("{username}")]
       public async Task <ActionResult<MemberDto>> GetUser(string username)
     {
         var user = await userRepository.GetMemberAsync(username);
