@@ -20,6 +20,7 @@
     <Folder Include="Errors\" />
     <Folder Include="Helpers\" />
     <Folder Include="Middleware\" />
+    <Folder Include="SignalR\" />
   </ItemGroup>
 
   <!-- <ItemGroup>
