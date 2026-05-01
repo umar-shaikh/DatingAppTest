@@ -34,6 +34,7 @@ export class AccountService {
           
           this.setCurrentUser(user);
         }
+        return user;
       }) 
     );
   }
@@ -50,6 +51,10 @@ export class AccountService {
   }
 
   setCurrentUser(user: User ) {
+
+    
+
+
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
     this.likeService.getLikesIds();

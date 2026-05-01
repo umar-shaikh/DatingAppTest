@@ -4,7 +4,10 @@
             <p>No messages</p>
         }
         @else{
-            <ul>
+            <ul
+                class="chat"
+                #scrollMe
+                style="overflow-y: scroll; max-height: 500px; scroll-behavior: smooth;">
                 @for (message of messageService.messageThread(); track message.id) {
                     <div>
                         <span class="chat-img float-end">

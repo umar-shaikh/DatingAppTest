@@ -67,24 +67,23 @@ public class MessageRepository(DataContext context, IMapper mapper ) : IMessageR
 
     public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
     {
-        var messages = await context.Messages
+        var query =  context.Messages
             
             .Where(m => m.RecipientUsername == currentUsername && m.RecipientDeleted == false && m.SenderUsername == recipientUsername ||
                         m.RecipientUsername == recipientUsername && m.SenderDeleted == false && m.SenderUsername == currentUsername)
             .OrderBy(m => m.MessageSent)
-            .ProjectTo<MessageDto>(mapper.ConfigurationProvider)
-            .ToListAsync();
+            .AsQueryable();
 
-        var unreadMessages = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUsername).ToList();
+        var unreadMessages = query.Where(m => m.DateRead == null && m.RecipientUsername == currentUsername).ToList();
 
         if (unreadMessages.Count != 0)
         {
            unreadMessages.ForEach(m => m.DateRead = DateTime.UtcNow);
 
-            await context.SaveChangesAsync() ;
+            
         }
 
-        return messages; 
+        return await query.ProjectTo<MessageDto>(mapper.ConfigurationProvider).ToListAsync(); 
     }
 
     public void RemoveConnection(Connection connection)
@@ -92,8 +91,5 @@ public class MessageRepository(DataContext context, IMapper mapper ) : IMessageR
         context.Connections.Remove(connection);
     }
 
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
-    }
+  
 }
